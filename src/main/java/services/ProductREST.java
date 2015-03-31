@@ -21,6 +21,7 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -40,7 +41,8 @@ public class ProductREST {
     @GET
     public Response getAll() {
         JsonArrayBuilder json = Json.createArrayBuilder();
-        productList = em.createQuery("SELECT p FROM Product p").getResultList();
+        Query q = em.createQuery("SELECT p FROM Product p");
+        productList = q.getResultList();
         for (Product p : productList) {
             json.add(p.toJSON());
         }
