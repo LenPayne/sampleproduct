@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 @Path("/product")
 public class ProductREST {
 
-    @PersistenceContext(name="persistence/sampleproductPU")
+    @PersistenceContext(unitName="sampleproductPU")
     EntityManager em;
 
     List<Product> productList;
