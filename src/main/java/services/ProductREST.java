@@ -24,6 +24,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 /**
@@ -41,12 +42,21 @@ public class ProductREST {
     @GET
     public Response getAll() {
         JsonArrayBuilder json = Json.createArrayBuilder();
-        Query q = em.createQuery("SELECT p FROM Product p");
+        Query q = em.createQuery("SELECT p FROM Product p");        
         productList = q.getResultList();
         for (Product p : productList) {
             json.add(p.toJSON());
         }
         return Response.ok(json.build().toString()).build();
+    }
+    
+    @GET
+    @Path("{id}")
+    public Response getById(@PathParam("id") int id) {
+        Query q = em.createQuery("SELECT p FROM Product p WHERE p.productId = :productId");
+        q.setParameter("productId", id);
+        Product p = (Product) q.getSingleResult();
+        return Response.ok(p.toJSON().toString()).build();
     }
 
 }
