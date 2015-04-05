@@ -46,7 +46,7 @@ public class ProductREST {
         for (Product p : productList) {
             json.add(p.toJSON());
         }
-        return Response.ok(json.build()).build();
+        return Response.ok(json.build().toString()).build();
     }
 
 }
