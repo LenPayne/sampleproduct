@@ -371,6 +371,7 @@
                 <smtp-server outbound-socket-binding-ref="mail-smtp"/>
             </mail-session>
         </subsystem>
+		<!--
         <subsystem xmlns="urn:jboss:domain:messaging:2.0">
             <hornetq-server>
                 <journal-file-size>102400</journal-file-size>
@@ -451,6 +452,7 @@
                 </jms-destinations>
             </hornetq-server>
         </subsystem>
+		-->
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
         </subsystem>
