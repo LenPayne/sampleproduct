@@ -1,3 +1,9 @@
-The OpenShift `jbossas` cartridge documentation can be found at:
+# OpenShift WildFly JPA & JAX-RS Sample
 
-https://github.com/openshift/origin-server/tree/master/cartridges/openshift-origin-cartridge-jbossas/README.md
+This sample appears to deploy correctly to a small gear with MySQL and can actually load.
+
+## Notes re: Deployment
+
+The `.openshift/config/standalone.xml` file has been heavily modified, and several features were taken out to optimize the app to run on a small gear.
+
+The app may still need to be restarted (in addition to redeployed) to clear enough memory for it to run.
