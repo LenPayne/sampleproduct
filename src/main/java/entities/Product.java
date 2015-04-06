@@ -15,22 +15,46 @@
  */
 package entities;
 
+import java.io.Serializable;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Len Payne <len.payne@lambtoncollege.ca>
  */
 @Entity
-public class Product {
+@NamedQueries({
+    @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+    @NamedQuery(name = "Product.findByProductId", query = "SELECT p FROM Product p WHERE p.productId = :productId"),
+    @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name")})
+public class Product implements Serializable {
     @Id
     private int productId;
     private String name;
     private String description;
     private int quantity;
+    
+    public Product() {        
+    }
+
+    public Product(int productId, String name, String description, int quantity) {
+        this.productId = productId;
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+    }
+    
+    public Product(JsonObject json){
+        productId = json.getInt("productId");
+        name = json.getString("name");
+        description = json.getString("description");
+        quantity = json.getInt("quantity");
+    }
 
     public int getProductId() {
         return productId;
@@ -62,7 +86,7 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
+    }    
     
     public JsonObject toJSON() {
         return Json.createObjectBuilder()
