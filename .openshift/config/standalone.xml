@@ -132,7 +132,7 @@
                 <in-memory/>
             </job-repository>
             <thread-pool>
-                <max-threads count="5"/>
+                <max-threads count="10"/>
                 <keepalive-time time="30" unit="seconds"/>
             </thread-pool>
         </subsystem>
@@ -246,7 +246,7 @@
             <remote connector-ref="http-remoting-connector" thread-pool-name="default"/>
             <thread-pools>
                 <thread-pool name="default">
-                    <max-threads count="5"/>
+                    <max-threads count="10"/>
                     <keepalive-time time="100" unit="milliseconds"/>
                 </thread-pool>
             </thread-pools>
@@ -306,15 +306,15 @@
             <bean-validation enabled="true"/>
             <default-workmanager>
                 <short-running-threads>
-                    <core-threads count="5"/>
-                    <queue-length count="5"/>
-                    <max-threads count="5"/>
+                    <core-threads count="50"/>
+                    <queue-length count="50"/>
+                    <max-threads count="50"/>
                     <keepalive-time time="10" unit="seconds"/>
                 </short-running-threads>
                 <long-running-threads>
-                    <core-threads count="5"/>
-                    <queue-length count="5"/>
-                    <max-threads count="5"/>
+                    <core-threads count="50"/>
+                    <queue-length count="50"/>
+                    <max-threads count="50"/>
                     <keepalive-time time="10" unit="seconds"/>
                 </long-running-threads>
             </default-workmanager>
