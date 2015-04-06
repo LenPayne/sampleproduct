@@ -33,6 +33,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 /**
@@ -52,6 +53,7 @@ public class ProductREST {
     List<Product> productList;
 
     @GET
+    @Produces("application/json")
     public Response getAll() {
         JsonArrayBuilder json = Json.createArrayBuilder();
         Query q = em.createNamedQuery("Product.findAll");
@@ -64,6 +66,7 @@ public class ProductREST {
 
     @GET
     @Path("{id}")
+    @Produces("application/json")
     public Response getById(@PathParam("id") int id) {
         Query q = em.createQuery("SELECT p FROM Product p WHERE p.productId = :productId");
         q.setParameter("productId", id);
@@ -71,7 +74,6 @@ public class ProductREST {
         return Response.ok(p.toJSON().toString()).build();
     }
 
-    
     @POST
     @Consumes("application/json")
     public Response add(JsonObject json) {
@@ -87,7 +89,7 @@ public class ProductREST {
         }
         return result;
     }
-    
+
     @PUT
     @Consumes("application/json")
     public Response edit(JsonObject json) {
