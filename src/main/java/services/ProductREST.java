@@ -17,6 +17,7 @@ package services;
 
 import entities.Product;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -35,6 +36,7 @@ import javax.ws.rs.core.Response;
  * @author Len Payne <len.payne@lambtoncollege.ca>
  */
 @Path("/product")
+@RequestScoped
 public class ProductREST {
 
     @PersistenceContext(unitName = "sampleproductPU")
