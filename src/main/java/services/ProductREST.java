@@ -18,15 +18,19 @@ package services;
 import entities.Product;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.UserTransaction;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
@@ -41,6 +45,9 @@ public class ProductREST {
 
     @PersistenceContext(unitName = "sampleproductPU")
     EntityManager em;
+
+    @Inject
+    UserTransaction transaction;
 
     List<Product> productList;
 
@@ -64,15 +71,53 @@ public class ProductREST {
         return Response.ok(p.toJSON().toString()).build();
     }
 
+    
     @POST
     @Consumes("application/json")
     public Response add(JsonObject json) {
         Response result;
         try {
-            em.getTransaction().begin();
+            transaction.begin();
             Product p = new Product(json);
             em.persist(p);
-            em.getTransaction().commit();
+            transaction.commit();
+            result = Response.ok().build();
+        } catch (Exception ex) {
+            result = Response.status(500).entity(ex.getMessage()).build();
+        }
+        return result;
+    }
+    
+    @PUT
+    @Consumes("application/json")
+    public Response edit(JsonObject json) {
+        Response result;
+        try {
+            transaction.begin();
+            Product p = (Product) em.createNamedQuery("Product.findByProductId")
+                    .setParameter("productId", json.getInt("productId")).getSingleResult();
+            p.setName(json.getString("name"));
+            p.setDescription(json.getString("description"));
+            p.setQuantity(json.getInt("quantity"));
+            em.persist(p);
+            transaction.commit();
+            result = Response.ok().build();
+        } catch (Exception ex) {
+            result = Response.status(500).entity(ex.getMessage()).build();
+        }
+        return result;
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response delete(@PathParam("id") int id) {
+        Response result;
+        try {
+            transaction.begin();
+            Product p = (Product) em.createNamedQuery("Product.findByProductId")
+                    .setParameter("productId", id).getSingleResult();
+            em.remove(p);
+            transaction.commit();
             result = Response.ok().build();
         } catch (Exception ex) {
             result = Response.status(500).entity(ex.getMessage()).build();
